@@ -1,0 +1,42 @@
+server:
+  port: 8082
+
+spring:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.default_batch_fetch_size: 1000
+      hibernate.default_schema: document
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+    database: POSTGRESQL
+    database-platform: postgres
+    audit:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5999/document?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: postgres
+    password: postgres
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: data-consumer-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 1
+      auto-startup: true
+    template:
+      default-topic: event.SocketData
+
+security:
+  jpa:
+    audit:
+      enabled: true
+
+application:
+  audit:
+    user: data-consumer-admin
